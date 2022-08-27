@@ -40,3 +40,19 @@ function renderDateRows(firstDateOfMonth, lastdateOfMonth) {
   }
   monthTableBody.innerHTML = dateRowsOfAMonth;
 }
+
+function initMonthNavButtons() {
+  document
+    .getElementById(`nextMonth_${this.uniqueCalendarId}`)
+    .addEventListener("click", () => {
+      this.monthNumber++;
+      this.renderMonthTable();
+    });
+
+  document
+    .getElementById(`previousMonth_${this.uniqueCalendarId}`)
+    .addEventListener("click", () => {
+      this.monthNumber--;
+      this.renderMonthTable();
+    });
+}
