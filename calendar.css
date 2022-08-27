@@ -1,0 +1,125 @@
+:root{
+  --cal-primary-color:#1E2B37;
+  --cal-secondary-color:#76828E;
+  --cal-event-color: #58bae4;
+  --cal-current-day-color:#f7e9cf;
+  --cal-gray: #5c5656;
+  --cal-black:#000;
+  --cal-white:#fff;
+  --cal-lightGray:#CBD4C2;
+  --cal-radius-sm:5px;
+}
+
+.cal-button {
+  background-color:var(--cal-primary-color);
+  width: 75px;
+  cursor: pointer;
+  box-shadow: 0px 0px 2px var(--cal-gray);
+  border: none;
+  outline: none;
+  padding: 5px;
+  border-radius: var(--cal-radius-sm);
+  color: var(--cal-white);
+}
+.calendar {
+  width: 100%;
+  font-size: 1rem;
+}
+.calendarHeader {
+  padding: 10px;
+  color: var(--cal-black);
+  font-size: 26px;
+  font-family: sans-serif;
+  display: flex;
+  justify-content: space-between;
+}
+.view{
+  display: none;
+}
+.view.active{
+  display: block;
+}
+.viewTable{
+  width: 100%;
+}
+.tableHeadings {
+  display: flex;
+}
+.tableHeadings th
+{
+  flex: 1;
+  color: var(--cal-gray);
+  padding: 10px;
+}
+.monthTable {
+  width: 100%;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+.viewToggleButtonsContainer{
+  display: flex;
+  justify-content: center;
+}
+.viewToggleButton{
+  background-color: var(--cal-secondary-color);
+  color: var(--cal-black);
+}
+.viewToggleButton.active{
+  background-color: var(--cal-primary-color);
+  color: var(--cal-white);
+}
+.viewToggleButton:nth-child(1){
+  border-radius: var(--cal-radius-sm) 0 0 var(--cal-radius-sm);
+}
+.viewToggleButton:nth-child(2){
+  border-radius: 0 ;
+}
+.viewToggleButton:nth-child(3){
+  border-radius: 0 var(--cal-radius-sm) var(--cal-radius-sm) 0;
+}
+.navButtonsContainer{
+  display: flex;
+}
+.navButton:nth-child(1){
+  border-radius: var(--cal-radius-sm) 0 0 var(--cal-radius-sm);
+}
+.navButton:nth-child(2){
+  border-radius: 0 var(--cal-radius-sm) var(--cal-radius-sm) 0;
+}
+.shortWeekdaysRow{
+  display: none;
+}
+.dateRow{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.dateCell {
+  padding: 10px;
+  aspect-ratio: 1/1;
+  flex: 1;
+  cursor: pointer;
+  box-sizing: border-box;
+  background-color: var(--cal-white);
+  margin: 5px;
+  box-shadow: 0px 0px 3px var(--cal-lightGray);
+  display: flex;
+  flex-direction: column;
+}
+.dateCell:hover {
+  background-color: #e8faed;
+}
+
+.dateCell + #currentDay {
+  background-color: var(--cal-current-day-color);
+}
+
+@media screen and (max-width:768px) {
+  .shortWeekdaysRow{
+    display: flex;
+  }
+  .longWeekdaysRow{
+    display: none;
+  }
+}
