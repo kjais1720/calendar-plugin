@@ -46,13 +46,34 @@ function initMonthNavButtons() {
     .getElementById(`nextMonth_${this.uniqueCalendarId}`)
     .addEventListener("click", () => {
       this.monthNumber++;
-      this.renderMonthTable();
+      this.renderMonthView();
     });
 
   document
     .getElementById(`previousMonth_${this.uniqueCalendarId}`)
     .addEventListener("click", () => {
       this.monthNumber--;
-      this.renderMonthTable();
+      this.renderMonthView();
     });
+}
+
+function renderMonthView() {
+  const currentDate = new Date();
+
+  if (this.monthNumber !== 0) {
+    currentDate.setMonth(new Date().getMonth() + this.monthNumber);
+  }
+
+  const month = currentDate.getMonth();
+  const year = currentDate.getFullYear();
+
+  const firstDateOfMonth = new Date(year, month, 1);
+  const lastdateOfMonth = new Date(year, month + 1, 0);
+
+  const monthDisplay = document.getElementById(`monthDisplay_${this.uniqueCalendarId}`)
+  monthDisplay.innerText = `${currentDate.toLocaleDateString("en-us", {
+    month: "long",
+  })} ${year}`;
+
+  renderDateRows.call(this, firstDateOfMonth, lastdateOfMonth);
 }
