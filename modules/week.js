@@ -77,12 +77,16 @@ function renderWeekView() {
 
   const year = currentDate.getFullYear();
   const weekStartDate = weekDates[0].getDate();
-  const monthString = weekDates[0].toString().split(" ")[1];
+  const weekStartMonth = weekDates[0].toString().split(" ")[1];
+  const weekEndMonth = weekDates[6].toString().split(" ")[1];
   const weekEndDate = weekDates[6].getDate();
   const weekDisplay = document.getElementById(
     `weekDisplay_${this.uniqueCalendarId}`
   );
-  weekDisplay.innerText = `${monthString} ${weekStartDate}-${weekEndDate}, ${year}`;
+  weekDisplay.innerText =
+    weekStartMonth === weekEndMonth
+      ? `${weekStartMonth} ${weekStartDate}-${weekEndDate}, ${year}`
+      : `${weekStartMonth} ${weekStartDate} - ${weekEndMonth} ${weekEndDate}, ${year}`;
 
   weekDatesRow.innerHTML = "<th></th>"; //Empty cell before the Week dates
 

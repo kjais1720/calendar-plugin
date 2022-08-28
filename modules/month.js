@@ -51,14 +51,14 @@ function initMonthNavButtons() {
   document
     .getElementById(`nextMonth_${this.uniqueCalendarId}`)
     .addEventListener("click", () => {
-      this.monthNumber++;
+      this.nthMonthFromCurrentMonth++;
       this.renderMonthView();
     });
 
   document
     .getElementById(`previousMonth_${this.uniqueCalendarId}`)
     .addEventListener("click", () => {
-      this.monthNumber--;
+      this.nthMonthFromCurrentMonth--;
       this.renderMonthView();
     });
 }
@@ -66,8 +66,8 @@ function initMonthNavButtons() {
 function renderMonthView() {
   const currentDate = new Date();
 
-  if (this.monthNumber !== 0) {
-    currentDate.setMonth(new Date().getMonth() + this.monthNumber);
+  if (this.nthMonthFromCurrentMonth !== 0) {
+    currentDate.setMonth(new Date().getMonth() + this.nthMonthFromCurrentMonth);
   }
 
   const month = currentDate.getMonth();

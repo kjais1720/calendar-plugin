@@ -3,7 +3,7 @@ function Calendar(calendarContainerId, userProvidedConfigs) {
   this.calendarConfigs = userProvidedConfigs;
   this.uniqueCalendarId = calendarContainerId;
 
-  this.monthNumber = 0;
+  this.nthMonthFromCurrentMonth = 0;
   this.nthWeekFromCurrentWeek = 0;
 
   this.render = render.bind(this);
