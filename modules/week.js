@@ -26,3 +26,19 @@ function getWeekDates(anyDateOfTheWeek) {
   }
   return weekDates;
 }
+
+function renderHourRows(weekStartDate){
+  const weekTableBody = document.getElementById(`weekTableBody_${this.uniqueCalendarId}`);
+  HOURS_IN_A_DAY.forEach((hour)=>{
+    const row = document.createElement("tr");
+    row.className="hourRow"
+    let rowHTML = `<td class="hourCell">${hour}</td>`;
+    for(let i = 0; i<7; i++){
+      const dateOfCurrentCell = new Date(weekStartDate);
+      dateOfCurrentCell.setDate(dateOfCurrentCell.getDate() + i);
+      rowHTML += `<td data-hour=${hour} data-date=${getDateString(dateOfCurrentCell)} class="hourCell"></td>`
+    }
+    row.innerHTML=rowHTML;
+    weekTableBody.appendChild(row);
+  })
+}
