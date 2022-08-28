@@ -23,6 +23,8 @@
 }
 .calendar {
   width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
   font-size: 1rem;
 }
 .calendarHeader {
@@ -111,8 +113,17 @@
   background-color: #e8faed;
 }
 
-.dateCell + #currentDay {
+.dateCell.currentDay {
   background-color: var(--cal-current-day-color);
+}
+.hourRow{
+  width: 100%;
+  display: flex;
+}
+.hourCell{
+  flex: 1;
+  padding: 10px;
+  box-shadow: 0px 0px 3px var(--cal-lightGray);
 }
 
 @media screen and (max-width:768px) {
