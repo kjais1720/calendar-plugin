@@ -1,50 +1,21 @@
-const WEEK_DAYS = [
-  {
-    short: "Sun",
-    long: "Sunday",
-  },
-  {
-    short: "Mon",
-    long: "Monday",
-  },
-  {
-    short: "Tue",
-    long: "Tuesday",
-  },
-  {
-    short: "Wed",
-    long: "Wednesday",
-  },
-  {
-    short: "Thu",
-    long: "Thursrday",
-  },
-  {
-    short: "Fri",
-    long: "Friday",
-  },
-  {
-    short: "Sat",
-    long: "Saturday",
-  },
-];
-/**
-
- * @param {string} calendarContainerId Id of the target container
- * @param {object} userProvidedConfigs {events:Array}
- * @returns A new calendar instance
- */
 function Calendar(calendarContainerId, userProvidedConfigs) {
-  this.clicked = null;
-  this.currentTableInitializer;
   this.activeViewId = `monthView_${calendarContainerId}`;
   this.calendarConfigs = userProvidedConfigs;
   this.uniqueCalendarId = calendarContainerId;
 
   this.monthNumber = 0;
-  this.weekNumber = 0;
+  this.nthWeekFromCurrentWeek = 0;
 
-  this.render = function () {
+  this.render = render.bind(this);
+  this.renderMonthView = renderMonthView.bind(this);
+  this.renderWeekView = renderWeekView.bind(this);
+
+  this.viewInitialisers = {
+    [`monthView_${calendarContainerId}`]: this.renderMonthView,
+    [`weekView_${calendarContainerId}`]: this.renderWeekView,
+  };
+
+  function render() {
     const uniqueCalendarId = this.uniqueCalendarId;
     const calendarNode = document.getElementById(calendarContainerId);
     calendarNode.innerHTML = `
@@ -90,14 +61,59 @@ function Calendar(calendarContainerId, userProvidedConfigs) {
             </tbody>
           </table>
         </div>
+        <div id="weekView_${uniqueCalendarId}" class="view">
+          <div class="calendarHeader">
+            <div id="weekDisplay_${uniqueCalendarId}"></div>
+            <div class="navButtonsContainer">
+              <button id="previousWeek_${uniqueCalendarId}" class="cal-button navButton">Back</button>
+              <button id="nextWeek_${uniqueCalendarId}" class="cal-button navButton">Next</button>
+            </div>
+          </div>
+          <table class="viewTable">
+            <thead>
+              <tr id="weekDatesRow_${uniqueCalendarId}" class="tableHeadings">
+    
+              </tr>
+            </thead>
+            <tbody id="weekTableBody_${uniqueCalendarId}" class="weekTableBody">
+              
+            </tbody>
+          </table>
+    
+        </div>
       </div>
       `;
 
-    this.renderMonthView();
-    this.initMonthNavButtons();
-  };
+    const viewToggleButtons = document.querySelectorAll(".viewToggleButton");
 
-  this.render = this.render.bind(this);
-  this.renderMonthView = renderMonthView.bind(this);
-  this.initMonthNavButtons = initMonthNavButtons.bind(this);
+    viewToggleButtons.forEach((button) =>
+      button.addEventListener("click", toggleView.bind(this))
+    );
+
+    this.renderMonthView();
+    initMonthNavButtons.call(this);
+    initWeekNavButtons.call(this);
+  }
+
+  function toggleView(e) {
+    if (e.currentTarget.className.includes("active")) {
+      return;
+    }
+    const currentActiveView = document.getElementById(this.activeViewId);
+    const currentActiveViewButton = document.querySelector(
+      ".viewToggleButton.active"
+    );
+
+    const targetViewId = e.target.getAttribute("data-target-id");
+    const targetView = document.getElementById(targetViewId);
+
+    currentActiveView.classList.remove("active");
+    targetView.classList.add("active");
+
+    currentActiveViewButton.classList.remove("active");
+    e.target.classList.add("active");
+
+    this.activeViewId = targetViewId;
+    this.viewInitialisers[this.activeViewId]();
+  }
 }

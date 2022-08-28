@@ -12,26 +12,32 @@ function renderDateRows(firstDateOfMonth, lastdateOfMonth) {
 
   while (i <= lastdateOfMonth.getDate()) {
     let dateRowOfWeek = "<tr class='dateRow'>";
-    const rowNumber = Math.floor(i / 7);
     for (let j = 0; j < 7; j++) {
+      const dateOfCurrentCell = new Date(firstDateOfMonth);
+      dateOfCurrentCell.setDate(dateOfCurrentCell.getDate() + (i - 1));
       const isCurrentDay =
         i === currentDayNumber && currentMonth === monthToDisplay;
-      dateRowOfWeek += `<td id=${
-        isCurrentDay
-          ? "currentDay"
-          : `${this.uniqueCalendarId}_dateCell_${rowNumber}_${j + 1}`
-      } class="dateCell">`;
       if (i === 1) {
         if (weekDayOfFirstDate === WEEK_DAYS[j].short) {
-          dateRowOfWeek += ` ${i} </td>`;
+          dateRowOfWeek += `
+            <td data-date="${getDateString(dateOfCurrentCell)}"
+                class="dateCell ${isCurrentDay ? "currentDay" : ""}"
+            >
+              ${i}
+            </td>`;
           i++;
         } else {
-          dateRowOfWeek += `</td>`; //padding
+          dateRowOfWeek += `<td class="dateCell"></td>`; //padding before the first date of month
         }
       } else if (i > lastdateOfMonth.getDate()) {
-        dateRowOfWeek += `</td>`; //padding
+        dateRowOfWeek += `<td class="dateCell"></td>`; //padding after the last date of month
       } else {
-        dateRowOfWeek += ` ${i} </td>`;
+        dateRowOfWeek += `
+            <td data-date="${getDateString(dateOfCurrentCell)}"
+                class="dateCell ${isCurrentDay ? "currentDay" : ""}"
+            >
+              ${i}
+            </td>`;
         i++;
       }
     }
@@ -70,7 +76,9 @@ function renderMonthView() {
   const firstDateOfMonth = new Date(year, month, 1);
   const lastdateOfMonth = new Date(year, month + 1, 0);
 
-  const monthDisplay = document.getElementById(`monthDisplay_${this.uniqueCalendarId}`)
+  const monthDisplay = document.getElementById(
+    `monthDisplay_${this.uniqueCalendarId}`
+  );
   monthDisplay.innerText = `${currentDate.toLocaleDateString("en-us", {
     month: "long",
   })} ${year}`;

@@ -1,0 +1,97 @@
+function getWeekDates(anyDateOfTheWeek) {
+  const weekDates = [];
+  let referenceDate = new Date(anyDateOfTheWeek);
+  for (let i = 0; i < 7; i++) {
+    const day = referenceDate.toString().split(" ")[0];
+    const dayNumber = WEEK_DAYS.findIndex((weekDay) => weekDay.short === day);
+    const temp = new Date(referenceDate);
+    weekDates[dayNumber] = temp;
+    referenceDate.setDate(referenceDate.getDate() - 1);
+    if (day === "Sun") {
+      break;
+    }
+  }
+  if (weekDates.length < 7) {
+    referenceDate = new Date(anyDateOfTheWeek);
+    for (let i = 0; i < 7; i++) {
+      referenceDate.setDate(referenceDate.getDate() + 1);
+      const day = referenceDate.toString().split(" ")[0];
+      const dayNumber = WEEK_DAYS.findIndex((weekDay) => weekDay.short === day);
+      const temp = new Date(referenceDate);
+      weekDates[dayNumber] = temp;
+      if (day === "Sat") {
+        break;
+      }
+    }
+  }
+  return weekDates;
+}
+
+function renderHourRows(weekStartDate) {
+  const weekTableBody = document.getElementById(
+    `weekTableBody_${this.uniqueCalendarId}`
+  );
+  HOURS_IN_A_DAY.forEach((hour) => {
+    const row = document.createElement("tr");
+    row.className = "hourRow";
+    let rowHTML = `<td class="hourCell">${hour}</td>`;
+    for (let i = 0; i < 7; i++) {
+      const dateOfCurrentCell = new Date(weekStartDate);
+      dateOfCurrentCell.setDate(dateOfCurrentCell.getDate() + i);
+      rowHTML += `<td data-hour=${hour} data-date=${getDateString(
+        dateOfCurrentCell
+      )} class="hourCell"></td>`;
+    }
+    row.innerHTML = rowHTML;
+    weekTableBody.appendChild(row);
+  });
+}
+
+function initWeekNavButtons() {
+  document
+    .getElementById(`nextWeek_${this.uniqueCalendarId}`)
+    .addEventListener("click", () => {
+      this.nthWeekFromCurrentWeek++;
+      this.renderWeekView();
+    });
+
+  document
+    .getElementById(`previousWeek_${this.uniqueCalendarId}`)
+    .addEventListener("click", () => {
+      this.nthWeekFromCurrentWeek--;
+      this.renderWeekView();
+    });
+}
+
+function renderWeekView() {
+  let weekDatesRow = document.getElementById(
+    `weekDatesRow_${this.uniqueCalendarId}`
+  );
+  const currentDate = new Date();
+
+  if (this.nthWeekFromCurrentWeek !== 0) {
+    currentDate.setDate(new Date().getDate() + this.nthWeekFromCurrentWeek * 7);
+  }
+
+  const weekDates = getWeekDates(currentDate);
+
+  const year = currentDate.getFullYear();
+  const weekStartDate = weekDates[0].getDate();
+  const monthString = weekDates[0].toString().split(" ")[1];
+  const weekEndDate = weekDates[6].getDate();
+  const weekDisplay = document.getElementById(
+    `weekDisplay_${this.uniqueCalendarId}`
+  );
+  weekDisplay.innerText = `${monthString} ${weekStartDate}-${weekEndDate}, ${year}`;
+
+  weekDatesRow.innerHTML = "<th></th>"; //Empty cell before the Week dates
+
+  weekDates.forEach((date) => {
+    const dateCell = document.createElement("th");
+    const day = date.toString().split(" ")[0];
+    const dateString = `${day} ${date.getMonth() + 1}/${date.getDate()}`;
+    dateCell.innerText = dateString;
+    weekDatesRow.appendChild(dateCell);
+  });
+  renderHourRows.call(this, weekDates[0]);
+}
