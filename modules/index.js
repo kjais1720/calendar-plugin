@@ -84,8 +84,36 @@ function Calendar(calendarContainerId, userProvidedConfigs) {
       </div>
       `;
 
+    const viewToggleButtons = document.querySelectorAll(".viewToggleButton");
+
+    viewToggleButtons.forEach((button) =>
+      button.addEventListener("click", toggleView.bind(this))
+    );
+
     this.renderMonthView();
     initMonthNavButtons.call(this);
     initWeekNavButtons.call(this);
+  }
+
+  function toggleView(e) {
+    if (e.currentTarget.className.includes("active")) {
+      return;
+    }
+    const currentActiveView = document.getElementById(this.activeViewId);
+    const currentActiveViewButton = document.querySelector(
+      ".viewToggleButton.active"
+    );
+
+    const targetViewId = e.target.getAttribute("data-target-id");
+    const targetView = document.getElementById(targetViewId);
+
+    currentActiveView.classList.remove("active");
+    targetView.classList.add("active");
+
+    currentActiveViewButton.classList.remove("active");
+    e.target.classList.add("active");
+
+    this.activeViewId = targetViewId;
+    this.viewInitialisers[this.activeViewId]();
   }
 }
