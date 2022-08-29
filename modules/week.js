@@ -27,7 +27,7 @@ function getWeekDates(anyDateOfTheWeek) {
   return weekDates;
 }
 
-function renderHourRows(weekStartDate) {
+function renderHourRowsOfAWeek(weekStartDate) {
   const weekTableBody = document.getElementById(
     `weekTableBody_${this.uniqueCalendarId}`
   );
@@ -97,5 +97,5 @@ function renderWeekView() {
     dateCell.innerText = dateString;
     weekDatesRow.appendChild(dateCell);
   });
-  renderHourRows.call(this, weekDates[0]);
+  renderHourRowsOfAWeek.call(this, weekDates[0]);
 }

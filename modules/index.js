@@ -5,14 +5,17 @@ function Calendar(calendarContainerId, userProvidedConfigs) {
 
   this.nthMonthFromCurrentMonth = 0;
   this.nthWeekFromCurrentWeek = 0;
+  this.nthDateFromCurrentDate = 0;
 
   this.render = render.bind(this);
   this.renderMonthView = renderMonthView.bind(this);
   this.renderWeekView = renderWeekView.bind(this);
+  this.renderDayView = renderDayView.bind(this);
 
   this.viewInitialisers = {
     [`monthView_${calendarContainerId}`]: this.renderMonthView,
     [`weekView_${calendarContainerId}`]: this.renderWeekView,
+    [`dayView_${calendarContainerId}`]: this.renderDayView,
   };
 
   function render() {
@@ -81,6 +84,26 @@ function Calendar(calendarContainerId, userProvidedConfigs) {
           </table>
     
         </div>
+        <div id="dayView_${uniqueCalendarId}" class="view">
+          <div class="calendarHeader">
+            <div id="dayDisplay_${uniqueCalendarId}"> </div>
+            <div class="navButtonsContainer">
+              <button id="previousDay_${uniqueCalendarId}" class="cal-button navButton">Back</button>
+              <button id="nextDay_${uniqueCalendarId}" class="cal-button navButton">Next</button>
+            </div>
+          </div>
+          <table class="viewTable">
+            <thead>
+              <tr class="tableHeadings">
+                <th id="dayHeading_${uniqueCalendarId}"></th>
+              </tr>
+            </thead>
+            <tbody id="dayTableBody_${uniqueCalendarId}" class="dayTableBody">
+              
+            </tbody>
+          </table>
+    
+        </div>
       </div>
       `;
 
@@ -93,6 +116,7 @@ function Calendar(calendarContainerId, userProvidedConfigs) {
     this.renderMonthView();
     initMonthNavButtons.call(this);
     initWeekNavButtons.call(this);
+    initDayNavButtons.call(this);
   }
 
   function toggleView(e) {
