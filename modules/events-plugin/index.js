@@ -26,6 +26,51 @@ function addEventsPluginToCalendar(calendarInstance, eventConfigs) {
     }
   }
 
+  function setEventHandlersToCells(eventsList) {
+    const allViewTableBodies = document.querySelectorAll(
+      `#${uniqueCalendarId} table tbody`
+    );
+    allViewTableBodies.forEach((tableBody) => {
+      //Delegating events
+      tableBody.addEventListener("click", (e) => {
+        const { target } = e;
+        if (
+          target.className.includes("dateCell") ||
+          target.className.includes("hourCell")
+        ) {
+          const cellDate = target.getAttribute("data-date");
+          const cellTime = target.getAttribute("data-hour") ?? "All Day";
+          
+          if(createNewEvent){
+            createNewEvent(cellDate, cellTime);
+            return;
+          }
+
+          const newEventTitle = prompt(`Enter the title of event`);
+          if (newEventTitle.trim() !== "") {
+            const eventId = `${cellDate}_${cellTime}_${newEventTitle}`
+            const newEvent = {
+              id:eventId,
+              date: cellDate,
+              title: newEventTitle,
+              time: cellTime,
+            };
+            eventsList.push(newEvent);
+            renderEvents();
+          }
+        } else if (target.className === "event") {
+          const targetEventId = target.getAttribute("data-eventId"); 
+          const targetEvent = eventsList.find(({id})=> id === targetEventId);
+          if(openEventDetailsModal){
+            openEventDetailsModal(targetEvent);
+            return;
+          }
+          alert(target.getAttribute("data-eventTitle"));
+        }
+      });
+    });
+  }
+
   navButtons.forEach((button) =>
     button.addEventListener("click", renderEvents)
   );
