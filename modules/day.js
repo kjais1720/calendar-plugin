@@ -9,6 +9,7 @@ function renderHourRowsOfADay(dateToDisplay) {
     singleRow += `<td style="flex:4" data-hour=${hour} data-date=${getDateString(
       dateToDisplay
     )} class="hourCell"></td>`;
+    singleRow += "</tr>"
     allRows += singleRow;
   });
   dayTableBody.innerHTML = allRows;
