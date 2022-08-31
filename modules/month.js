@@ -65,23 +65,18 @@ function initMonthNavButtons() {
 
 function renderMonthView() {
   const currentDate = new Date();
+  const monthToDisplay = currentDate.getMonth() + this.nthMonthFromCurrentMonth;
+  const yearToDisplay = currentDate.getFullYear();
 
-  if (this.nthMonthFromCurrentMonth !== 0) {
-    currentDate.setMonth(new Date().getMonth() + this.nthMonthFromCurrentMonth);
-  }
-
-  const month = currentDate.getMonth();
-  const year = currentDate.getFullYear();
-
-  const firstDateOfMonth = new Date(year, month, 1);
-  const lastdateOfMonth = new Date(year, month + 1, 0);
+  const firstDateOfMonth = new Date(yearToDisplay, monthToDisplay, 1);
+  const lastdateOfMonth = new Date(yearToDisplay, monthToDisplay + 1, 0);
 
   const monthDisplay = document.getElementById(
     `monthDisplay_${this.uniqueCalendarId}`
   );
-  monthDisplay.innerText = `${currentDate.toLocaleDateString("en-us", {
+  monthDisplay.innerText = `${firstDateOfMonth.toLocaleDateString("en-us", {
     month: "long",
-  })} ${year}`;
+  })} ${yearToDisplay}`;
 
   renderDateRows.call(this, firstDateOfMonth, lastdateOfMonth);
 }
