@@ -24,3 +24,27 @@ function clearEventsFromCells(uniqueTableId){
     })
   });
 }
+
+function insertEventsInCells(uniqueTableId, eventsList) {
+  clearEventsFromCells(uniqueTableId);
+  eventsList.forEach((event) => {
+    let cellSelector;
+    const eventTime = event.time;
+    const dateString = getDateString(event.date);
+    const isMonthTable = uniqueTableId.includes("month");
+    const isDayTable = uniqueTableId.includes("day");
+
+    if (isMonthTable) {
+      cellSelector = `#${uniqueTableId} [data-date="${dateString}"]`;
+    } else {
+      cellSelector = `#${uniqueTableId} [data-date="${dateString}"][data-hour="${eventTime}"]`;
+    }
+    const cell = document.querySelector(cellSelector);
+    if (cell) {
+      const eventDiv = isDayTable //truncate event title if active table is not day table 
+        ? createEventDiv(event, false)
+        : createEventDiv(event, true);
+      cell.appendChild(eventDiv);
+    }
+  });
+}
