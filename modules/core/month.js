@@ -1,22 +1,25 @@
-function renderDateRows(firstDateOfMonth, lastdateOfMonth) {
+function renderDateRowsOfAMonth(firstDateOfMonth, lastdateOfMonth) {
   const monthTableBody = document.getElementById(
     `monthTableBody_${this.uniqueCalendarId}`
   );
   let i = 1;
-  let dateRowsOfAMonth = "";
+  let allDateRowsOfAMonth = "";
   const currentDate = new Date();
   const currentDayNumber = currentDate.getDate();
   const currentMonth = currentDate.getMonth();
+  const currentYear = currentDate.getFullYear();
   const monthToDisplay = firstDateOfMonth.getMonth();
   const weekDayOfFirstDate = firstDateOfMonth.toString().split(" ")[0];
 
   while (i <= lastdateOfMonth.getDate()) {
     let dateRowOfWeek = "<tr class='dateRow'>";
     for (let j = 0; j < 7; j++) {
-      const dateOfCurrentCell = new Date(firstDateOfMonth);
-      dateOfCurrentCell.setDate(dateOfCurrentCell.getDate() + (i - 1));
+      const dateOfCurrentCell = new Date();
+      dateOfCurrentCell.setDate(firstDateOfMonth.getDate() + (i - 1));
       const isCurrentDay =
-        i === currentDayNumber && currentMonth === monthToDisplay;
+        i === currentDayNumber &&
+        currentMonth === monthToDisplay &&
+        dateOfCurrentCell.getFullYear() === currentYear;
       if (i === 1) {
         if (weekDayOfFirstDate === WEEK_DAYS[j].short) {
           dateRowOfWeek += `
@@ -27,10 +30,10 @@ function renderDateRows(firstDateOfMonth, lastdateOfMonth) {
             </td>`;
           i++;
         } else {
-          dateRowOfWeek += `<td class="dateCell"></td>`; //padding before the first date of month
+          dateRowOfWeek += `<td class="dateCell"></td>`; //Empty cells in a week before the first date of month
         }
       } else if (i > lastdateOfMonth.getDate()) {
-        dateRowOfWeek += `<td class="dateCell"></td>`; //padding after the last date of month
+        dateRowOfWeek += `<td class="dateCell"></td>`; //Empty cells in a week after the last date of month
       } else {
         dateRowOfWeek += `
             <td data-date="${getDateString(dateOfCurrentCell)}"
@@ -42,9 +45,9 @@ function renderDateRows(firstDateOfMonth, lastdateOfMonth) {
       }
     }
     dateRowOfWeek += "</tr>";
-    dateRowsOfAMonth += dateRowOfWeek;
+    allDateRowsOfAMonth += dateRowOfWeek;
   }
-  monthTableBody.innerHTML = dateRowsOfAMonth;
+  monthTableBody.innerHTML = allDateRowsOfAMonth;
 }
 
 function initMonthNavButtons() {
@@ -66,25 +69,30 @@ function initMonthNavButtons() {
 function renderMonthView() {
   const firstDateOfDisplayMonth = new Date();
   firstDateOfDisplayMonth.setDate(1); //To avoid the edge case at 31st of a month
+
   if (this.diffBetCurrentAndDisplayMonth !== 0) {
     firstDateOfDisplayMonth.setMonth(
       firstDateOfDisplayMonth.getMonth() + this.diffBetCurrentAndDisplayMonth
     );
   }
-  const month = firstDateOfDisplayMonth.getMonth();
-  const year = firstDateOfDisplayMonth.getFullYear();
+  const displayMonth = firstDateOfDisplayMonth.getMonth();
+  const displayYear = firstDateOfDisplayMonth.getFullYear();
 
-  const lastDateOfDisplayMonth = new Date(year, month + 1, 0);
+  const lastDateOfDisplayMonth = new Date(displayYear, displayMonth + 1, 0);
 
-  const monthDisplay = document.getElementById(
-    `monthDisplay_${this.uniqueCalendarId}`
+  const monthHeading = document.getElementById(
+    `monthHeading_${this.uniqueCalendarId}`
   );
-  monthDisplay.innerText = `${firstDateOfDisplayMonth.toLocaleDateString(
+  monthHeading.innerText = `${firstDateOfDisplayMonth.toLocaleDateString(
     "en-us",
     {
       month: "long",
     }
-  )} ${year}`;
+  )} ${displayYear}`;
 
-  renderDateRows.call(this, firstDateOfDisplayMonth, lastDateOfDisplayMonth);
+  renderDateRowsOfAMonth.call(
+    this,
+    firstDateOfDisplayMonth,
+    lastDateOfDisplayMonth
+  );
 }

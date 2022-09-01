@@ -3,12 +3,10 @@ function renderHourRowsOfADay(dateToDisplay) {
     `dayTableBody_${this.uniqueCalendarId}`
   );
   let allRows = "";
-  HOURS_IN_A_DAY.forEach((hour) => {
+  HOURS_OF_A_DAY.forEach((hour) => {
     let singleRow = `<tr class='hourRow'>`;
     singleRow += `<td class="hourCell">${hour}</td>`;
-    singleRow += `<td style="flex:4" data-hour="${hour}" data-date=${getDateString(
-      dateToDisplay
-    )} class="hourCell"></td>`;
+    singleRow += `<td style="flex:4" data-hour="${hour}" data-date=${getDateString(dateToDisplay)} class="hourCell"></td>`;
     singleRow += "</tr>";
     allRows += singleRow;
   });
@@ -32,11 +30,11 @@ function initDayNavButtons() {
 }
 
 function renderDayView() {
-  const dayDisplay = document.getElementById(
-    `dayDisplay_${this.uniqueCalendarId}`
-  );
   const dayHeading = document.getElementById(
     `dayHeading_${this.uniqueCalendarId}`
+  );
+  const dayTableHeading = document.getElementById(
+    `dayTableHeading_${this.uniqueCalendarId}`
   );
   const dateToDisplay = new Date();
 
@@ -53,8 +51,8 @@ function renderDayView() {
     (day) => day.short === weekDayOfDateToDisplay
   );
 
-  dayDisplay.innerText = `${monthStringToDisplay} ${dateToDisplay.getDate()}, ${yearToDisplay}`;
-  dayHeading.innerHTML = `<th></th><th>${weekDayOfDateToDisplay.long}</th>`; //Empty cell before the Week dates
+  dayHeading.innerText = `${monthStringToDisplay} ${dateToDisplay.getDate()}, ${yearToDisplay}`;
+  dayTableHeading.innerHTML = `<th>${weekDayOfDateToDisplay.long}</th>`;
 
   renderHourRowsOfADay.call(this, dateToDisplay);
 }

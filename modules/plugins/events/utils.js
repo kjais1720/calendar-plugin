@@ -41,9 +41,8 @@ function insertEventsInCells(uniqueTableId, eventsList) {
     }
     const cell = document.querySelector(cellSelector);
     if (cell) {
-      const eventDiv = isDayTable //truncate event title if active table is not day table 
-        ? createEventDiv(event, false)
-        : createEventDiv(event, true);
+      const truncateEventTitle = !isDayTable
+      const eventDiv = createEventDiv(event, truncateEventTitle);
       cell.appendChild(eventDiv);
     }
   });
@@ -55,7 +54,7 @@ function getEventStartAndEndDate(eventDate, eventTime){
     if (eventTime === "All Day") {
       eventEndDate.setDate(eventStartDate.getDate() + 1);
     } else {
-      const eventTimeInHours = Number(eventTime.slice(0, -2));
+      let eventTimeInHours = Number(eventTime.slice(0, -2)); //Removing the postfix( AM/PM )
       eventStartDate.setHours(eventTimeInHours);
       eventEndDate.setHours(eventTimeInHours + 1);
     }
