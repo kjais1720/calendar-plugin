@@ -70,6 +70,13 @@ function addEventsPluginToCalendar(calendarInstance, eventConfigs) {
     }
   }
 
+  function deleteEvent(event){
+    const indexOfEventToDelete = eventsList.findIndex(
+      ({ id }) => id === event.id
+    );
+    eventsList.splice(indexOfEventToDelete, 1);
+    renderEvents();
+  }
 
   function setEventHandlersToCells(eventsList) {
     const allViewTableBodies = document.querySelectorAll(
