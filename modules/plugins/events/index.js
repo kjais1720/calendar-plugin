@@ -1,8 +1,6 @@
 function addEventsPluginToCalendar(calendarInstance, userProvidedConfigs) {
   const { uniqueCalendarId } = calendarInstance;
-  const locallySavedEvents = localStorage.getItem(
-    `${uniqueCalendarId}_eventsList`
-  )
+  const locallySavedEvents = localStorage.getItem(`${uniqueCalendarId}_eventsList`)
     ? JSON.parse(localStorage.getItem(`${uniqueCalendarId}_eventsList`))
     : [];
   let eventsList = userProvidedConfigs?.eventsList ?? locallySavedEvents;
@@ -119,6 +117,7 @@ function addEventsPluginToCalendar(calendarInstance, userProvidedConfigs) {
         } else if (target.className === "event") {
           const targetEventId = target.getAttribute("data-eventId");
           const targetEvent = eventsList.find(({ id }) => id === targetEventId);
+         
           if (userProvidedConfigs?.displayEventDetails) {
             userProvidedConfigs?.displayEventDetails(targetEvent);
             return;

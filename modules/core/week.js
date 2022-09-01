@@ -2,6 +2,7 @@ function getWeekDates(anyDateOfTheWeek) {
   const weekDates = [];
   let referenceDate = new Date(anyDateOfTheWeek);
   for (let i = 0; i < 7; i++) {
+    // Get the days before the reference date
     const day = referenceDate.toString().split(" ")[0];
     const dayNumber = WEEK_DAYS.findIndex((weekDay) => weekDay.short === day);
     const temp = new Date(referenceDate);
@@ -14,6 +15,7 @@ function getWeekDates(anyDateOfTheWeek) {
   if (weekDates.length < 7) {
     referenceDate = new Date(anyDateOfTheWeek);
     for (let i = 0; i < 7; i++) {
+      // Get the days after the reference date
       referenceDate.setDate(referenceDate.getDate() + 1);
       const day = referenceDate.toString().split(" ")[0];
       const dayNumber = WEEK_DAYS.findIndex((weekDay) => weekDay.short === day);
@@ -32,7 +34,7 @@ function renderHourRowsOfAWeek(weekStartDate) {
     `weekTableBody_${this.uniqueCalendarId}`
   );
   let allRows = "";
-  HOURS_IN_A_DAY.forEach((hour) => {
+  HOURS_OF_A_DAY.forEach((hour) => {
     let singleRow = `<tr class='hourRow'>`;
     singleRow += `<td class="hourCell">${hour}</td>`;
     for (let i = 0; i < 7; i++) {
@@ -65,40 +67,40 @@ function initWeekNavButtons() {
 }
 
 function renderWeekView() {
-  let weekDatesRow = document.getElementById(
-    `weekDatesRow_${this.uniqueCalendarId}`
+  const weekTableHeadingsRow = document.getElementById(
+    `weekTableHeadingsRow_${this.uniqueCalendarId}`
   );
-  const currentDate = new Date();
+  const weekHeading = document.getElementById(
+    `weekHeading_${this.uniqueCalendarId}`
+  );
+  const aDateOfTheWeek = new Date();
 
   if (this.diffBetCurrentAndDisplayWeek !== 0) {
-    currentDate.setDate(
+    aDateOfTheWeek.setDate(
       new Date().getDate() + this.diffBetCurrentAndDisplayWeek * 7
     );
   }
 
-  const weekDates = getWeekDates(currentDate);
+  const weekDates = getWeekDates(aDateOfTheWeek);
 
-  const year = currentDate.getFullYear();
+  const year = aDateOfTheWeek.getFullYear();
   const weekStartDate = weekDates[0].getDate();
   const weekStartMonth = weekDates[0].toString().split(" ")[1];
   const weekEndMonth = weekDates[6].toString().split(" ")[1];
   const weekEndDate = weekDates[6].getDate();
-  const weekDisplay = document.getElementById(
-    `weekDisplay_${this.uniqueCalendarId}`
-  );
-  weekDisplay.innerText =
+
+  weekHeading.innerText =
     weekStartMonth === weekEndMonth
       ? `${weekStartMonth} ${weekStartDate}-${weekEndDate}, ${year}`
       : `${weekStartMonth} ${weekStartDate} - ${weekEndMonth} ${weekEndDate}, ${year}`;
 
-  weekDatesRow.innerHTML = "<th></th>"; //Empty cell before the Week dates
+  let weekTableHeadings = "<th></th>"; //Empty cell before the Week dates
 
   weekDates.forEach((date) => {
-    const dateCell = document.createElement("th");
     const day = date.toString().split(" ")[0];
     const dateString = `${day} ${date.getMonth() + 1}/${date.getDate()}`;
-    dateCell.innerText = dateString;
-    weekDatesRow.appendChild(dateCell);
+    weekTableHeadings += `<th>${dateString}</th>`
   });
+  weekTableHeadingsRow.innerHTML = weekTableHeadings;
   renderHourRowsOfAWeek.call(this, weekDates[0]);
 }

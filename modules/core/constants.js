@@ -28,7 +28,7 @@ const WEEK_DAYS = [
     long: "Saturday",
   },
 ];
-const HOURS_IN_A_DAY = [
+const HOURS_OF_A_DAY = [
   "All Day",
   "12AM",
   "1AM",

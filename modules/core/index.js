@@ -1,12 +1,12 @@
-function Calendar(calendarContainerId, userProvidedConfigs) {
+function Calendar(calendarContainerId) {
   this.activeViewId = `monthView_${calendarContainerId}`;
-  this.calendarConfigs = userProvidedConfigs;
   this.uniqueCalendarId = calendarContainerId;
 
-  this.diffBetCurrentAndDisplayMonth = 0;
+  this.diffBetCurrentAndDisplayMonth = 0; //The difference between the current month and the month to be displayed
   this.diffBetCurrentAndDisplayWeek = 0;
   this.diffBetCurrentAndDisplayDate = 0;
 
+  // To bind the new instance of calendar to the functions
   this.render = render.bind(this);
   this.renderMonthView = renderMonthView.bind(this);
   this.renderWeekView = renderWeekView.bind(this);
@@ -32,7 +32,7 @@ function Calendar(calendarContainerId, userProvidedConfigs) {
     
         <div id="monthView_${uniqueCalendarId}" class="view active">
           <div class="calendarHeader">
-            <div id="monthDisplay_${uniqueCalendarId}"></div>
+            <div id="monthHeading_${uniqueCalendarId}"></div>
             <div class="navButtonsContainer">
               <button id="previousMonth_${uniqueCalendarId}" class="cal-button navButton">Back</button>
               <button id="nextMonth_${uniqueCalendarId}" class="cal-button navButton">Next</button>
@@ -66,7 +66,7 @@ function Calendar(calendarContainerId, userProvidedConfigs) {
         </div>
         <div id="weekView_${uniqueCalendarId}" class="view">
           <div class="calendarHeader">
-            <div id="weekDisplay_${uniqueCalendarId}"></div>
+            <div id="weekHeading_${uniqueCalendarId}"></div>
             <div class="navButtonsContainer">
               <button id="previousWeek_${uniqueCalendarId}" class="cal-button navButton">Back</button>
               <button id="nextWeek_${uniqueCalendarId}" class="cal-button navButton">Next</button>
@@ -74,7 +74,7 @@ function Calendar(calendarContainerId, userProvidedConfigs) {
           </div>
           <table class="viewTable">
             <thead>
-              <tr id="weekDatesRow_${uniqueCalendarId}" class="tableHeadings">
+              <tr id="weekTableHeadingsRow_${uniqueCalendarId}" class="tableHeadings">
     
               </tr>
             </thead>
@@ -86,7 +86,7 @@ function Calendar(calendarContainerId, userProvidedConfigs) {
         </div>
         <div id="dayView_${uniqueCalendarId}" class="view">
           <div class="calendarHeader">
-            <div id="dayDisplay_${uniqueCalendarId}"> </div>
+            <div id="dayHeading_${uniqueCalendarId}"> </div>
             <div class="navButtonsContainer">
               <button id="previousDay_${uniqueCalendarId}" class="cal-button navButton">Back</button>
               <button id="nextDay_${uniqueCalendarId}" class="cal-button navButton">Next</button>
@@ -95,7 +95,7 @@ function Calendar(calendarContainerId, userProvidedConfigs) {
           <table class="viewTable">
             <thead>
               <tr class="tableHeadings">
-                <th id="dayHeading_${uniqueCalendarId}"></th>
+                <th id="dayTableHeading_${uniqueCalendarId}"></th>
               </tr>
             </thead>
             <tbody id="dayTableBody_${uniqueCalendarId}" class="dayTableBody">
@@ -108,7 +108,6 @@ function Calendar(calendarContainerId, userProvidedConfigs) {
       `;
 
     const viewToggleButtons = document.querySelectorAll(".viewToggleButton");
-
     viewToggleButtons.forEach((button) =>
       button.addEventListener("click", toggleView.bind(this))
     );
@@ -120,7 +119,8 @@ function Calendar(calendarContainerId, userProvidedConfigs) {
   }
 
   function toggleView(e) {
-    if (e.currentTarget.className.includes("active")) {
+    const isActiveButtonClicked = e.currentTarget.className.includes("active");
+    if (isActiveButtonClicked) {
       return;
     }
     const currentActiveView = document.getElementById(this.activeViewId);
