@@ -6,7 +6,7 @@ function renderHourRowsOfADay(dateToDisplay) {
   HOURS_IN_A_DAY.forEach((hour) => {
     let singleRow = `<tr class='hourRow'>`;
     singleRow += `<td class="hourCell">${hour}</td>`;
-    singleRow += `<td style="flex:4" data-hour=${hour} data-date=${getDateString(
+    singleRow += `<td style="flex:4" data-hour="${hour}" data-date=${getDateString(
       dateToDisplay
     )} class="hourCell"></td>`;
     singleRow += "</tr>"
