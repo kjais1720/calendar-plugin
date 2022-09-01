@@ -1,3 +1,4 @@
+//Script for demo, not included in the plugin
 let renderEvents;
 let selectedEventId;
 let selectedDate;
@@ -16,7 +17,7 @@ function getEventStartAndEndDate(eventDate, eventTime) {
   if (eventTime === "All Day") {
     eventEndDate.setDate(eventStartDate.getDate() + 1);
   } else {
-    const eventTimeInHours = Number(time.slice(0, -2));
+    const eventTimeInHours = Number(eventTime.slice(0, -2));
     eventStartDate.setHours(eventTimeInHours);
     eventEndDate.setHours(eventTimeInHours + 1);
   }
