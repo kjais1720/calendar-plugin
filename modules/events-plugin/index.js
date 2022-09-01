@@ -1,5 +1,6 @@
 function addEventsPluginToCalendar(calendarInstance, userProvidedConfigs) {
   const { uniqueCalendarId } = calendarInstance;
+  let eventsList = userProvidedConfigs?.eventsList ?? [];
   const navButtons = document.querySelectorAll(
     `#${uniqueCalendarId} .navButton`
   );
@@ -9,7 +10,9 @@ function addEventsPluginToCalendar(calendarInstance, userProvidedConfigs) {
 
   function renderEvents() {
     const { activeViewId } = calendarInstance;
-    const { eventsList } = userProvidedConfigs;
+    if(userProvidedConfigs?.eventsList){
+      eventsList = userProvidedConfigs.eventsList;
+    }
     switch (activeViewId) {
       case `monthView_${uniqueCalendarId}`:
         insertEventsInCells(`monthView_${uniqueCalendarId}`, eventsList);
@@ -61,8 +64,8 @@ function addEventsPluginToCalendar(calendarInstance, userProvidedConfigs) {
                               \n\nTo DELETE the event, press "OK", else press "Cancel"`;
     const shouldDeleteEvent = confirm(modalDisplayText);
     if(shouldDeleteEvent){
-      if(userProvidedConfigs.deleteEvent){
-        userProvidedConfigs.deleteEvent(event);
+      if(userProvidedConfigs?.deleteEvent){
+        userProvidedConfigs?.deleteEvent(event);
         return;
       }
       deleteEvent(event);
@@ -77,7 +80,7 @@ function addEventsPluginToCalendar(calendarInstance, userProvidedConfigs) {
     renderEvents();
   }
 
-  function setEventHandlersToCells(eventsList) {
+  function setEventHandlersToCells() {
     const allViewTableBodies = document.querySelectorAll(
       `#${uniqueCalendarId} table tbody`
     );
@@ -94,8 +97,8 @@ function addEventsPluginToCalendar(calendarInstance, userProvidedConfigs) {
           const cellDate = target.getAttribute("data-date");
           const cellTime = target.getAttribute("data-hour") ?? "All Day";
 
-          if (userProvidedConfigs.createNewEvent) {
-            userProvidedConfigs.createNewEvent(cellDate, cellTime);
+          if (userProvidedConfigs?.createNewEvent) {
+            userProvidedConfigs?.createNewEvent(cellDate, cellTime);
             return;
           }
 
@@ -104,8 +107,8 @@ function addEventsPluginToCalendar(calendarInstance, userProvidedConfigs) {
         } else if (target.className === "event") {
           const targetEventId = target.getAttribute("data-eventId");
           const targetEvent = eventsList.find(({ id }) => id === targetEventId);
-          if (userProvidedConfigs.openEventDetailsModal) {
-            userProvidedConfigs.openEventDetailsModal(targetEvent);
+          if (userProvidedConfigs?.openEventDetailsModal) {
+            userProvidedConfigs?.openEventDetailsModal(targetEvent);
             return;
           }
 
@@ -122,8 +125,9 @@ function addEventsPluginToCalendar(calendarInstance, userProvidedConfigs) {
   viewToggleButtons.forEach((button) =>
     button.addEventListener("click", renderEvents)
   );
+  
   renderEvents();
-  setEventHandlersToCells(eventsList);
+  setEventHandlersToCells();
 
   return renderEvents;
 }
