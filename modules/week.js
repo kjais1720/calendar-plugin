@@ -38,7 +38,7 @@ function renderHourRowsOfAWeek(weekStartDate) {
     for (let i = 0; i < 7; i++) {
       const dateOfCurrentCell = new Date(weekStartDate);
       dateOfCurrentCell.setDate(dateOfCurrentCell.getDate() + i);
-      singleRow += `<td data-hour=${hour} data-date=${getDateString(
+      singleRow += `<td data-hour="${hour}" data-date=${getDateString(
         dateOfCurrentCell
       )} class="hourCell"></td>`;
     }

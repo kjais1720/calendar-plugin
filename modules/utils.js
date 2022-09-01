@@ -1,6 +1,7 @@
 function getDateString(date){
-  const month = date.getMonth()+1;
-  const day = date.getDate();
-  const year = date.getFullYear()
+  const formattedDate = new Date(date)
+  const month = formattedDate.getMonth()+1;
+  const day = formattedDate.getDate();
+  const year = formattedDate.getFullYear()
   return `${month}/${day}/${year}`
 }
