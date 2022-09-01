@@ -1,8 +1,10 @@
 function addEventsPluginToCalendar(calendarInstance, userProvidedConfigs) {
   const { uniqueCalendarId } = calendarInstance;
-  const locallySavedEvents = localStorage.getItem(`${uniqueCalendarId}_eventsList`) 
-                              ? JSON.parse(localStorage.getItem(`${uniqueCalendarId}_eventsList`)) 
-                              : []
+  const locallySavedEvents = localStorage.getItem(
+    `${uniqueCalendarId}_eventsList`
+  )
+    ? JSON.parse(localStorage.getItem(`${uniqueCalendarId}_eventsList`))
+    : [];
   let eventsList = userProvidedConfigs?.eventsList ?? locallySavedEvents;
   const navButtons = document.querySelectorAll(
     `#${uniqueCalendarId} .navButton`
@@ -13,7 +15,7 @@ function addEventsPluginToCalendar(calendarInstance, userProvidedConfigs) {
 
   function renderEvents() {
     const { activeViewId } = calendarInstance;
-    if(userProvidedConfigs?.eventsList){
+    if (userProvidedConfigs?.eventsList) {
       eventsList = userProvidedConfigs.eventsList;
     }
     switch (activeViewId) {
@@ -49,15 +51,18 @@ function addEventsPluginToCalendar(calendarInstance, userProvidedConfigs) {
         id: eventId,
         date,
         title: newEventTitle,
-        time
+        time,
       };
       eventsList.push(newEvent);
-      localStorage.setItem(`${uniqueCalendarId}_eventsList`,JSON.stringify(eventsList));
+      localStorage.setItem(
+        `${uniqueCalendarId}_eventsList`,
+        JSON.stringify(eventsList)
+      );
       renderEvents();
     }
   }
 
-  function openEventDetailsModal(event) {
+  function displayEventDetails(event) {
     const { date, time, title } = event;
     const { eventStartDate, eventEndDate } = getEventStartAndEndDate(
       date,
@@ -67,8 +72,8 @@ function addEventsPluginToCalendar(calendarInstance, userProvidedConfigs) {
                               \nDuration: ${eventStartDate} to ${eventEndDate} 
                               \n\nTo DELETE the event, press "OK", else press "Cancel"`;
     const shouldDeleteEvent = confirm(modalDisplayText);
-    if(shouldDeleteEvent){
-      if(userProvidedConfigs?.deleteEvent){
+    if (shouldDeleteEvent) {
+      if (userProvidedConfigs?.deleteEvent) {
         userProvidedConfigs?.deleteEvent(event);
         return;
       }
@@ -76,12 +81,15 @@ function addEventsPluginToCalendar(calendarInstance, userProvidedConfigs) {
     }
   }
 
-  function deleteEvent(event){
+  function deleteEvent(event) {
     const indexOfEventToDelete = eventsList.findIndex(
       ({ id }) => id === event.id
     );
     eventsList.splice(indexOfEventToDelete, 1);
-    localStorage.setItem(`${uniqueCalendarId}_eventsList`,JSON.stringify(eventsList));
+    localStorage.setItem(
+      `${uniqueCalendarId}_eventsList`,
+      JSON.stringify(eventsList)
+    );
     renderEvents();
   }
 
@@ -108,17 +116,15 @@ function addEventsPluginToCalendar(calendarInstance, userProvidedConfigs) {
           }
 
           createNewEvent(cellDate, cellTime);
-
         } else if (target.className === "event") {
           const targetEventId = target.getAttribute("data-eventId");
           const targetEvent = eventsList.find(({ id }) => id === targetEventId);
-          if (userProvidedConfigs?.openEventDetailsModal) {
-            userProvidedConfigs?.openEventDetailsModal(targetEvent);
+          if (userProvidedConfigs?.displayEventDetails) {
+            userProvidedConfigs?.displayEventDetails(targetEvent);
             return;
           }
 
-          openEventDetailsModal(targetEvent);
-        
+          displayEventDetails(targetEvent);
         }
       });
     });
@@ -130,7 +136,7 @@ function addEventsPluginToCalendar(calendarInstance, userProvidedConfigs) {
   viewToggleButtons.forEach((button) =>
     button.addEventListener("click", renderEvents)
   );
-  
+
   renderEvents();
   setEventHandlersToCells();
 
