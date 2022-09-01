@@ -51,14 +51,14 @@ function initMonthNavButtons() {
   document
     .getElementById(`nextMonth_${this.uniqueCalendarId}`)
     .addEventListener("click", () => {
-      this.nthMonthFromCurrentMonth++;
+      this.diffBetCurrentAndDisplayMonth++;
       this.renderMonthView();
     });
 
   document
     .getElementById(`previousMonth_${this.uniqueCalendarId}`)
     .addEventListener("click", () => {
-      this.nthMonthFromCurrentMonth--;
+      this.diffBetCurrentAndDisplayMonth--;
       this.renderMonthView();
     });
 }
@@ -66,10 +66,12 @@ function initMonthNavButtons() {
 function renderMonthView() {
   const firstDateOfDisplayMonth = new Date();
   firstDateOfDisplayMonth.setDate(1); //To avoid the edge case at 31st of a month
-  if (this.nthMonthFromCurrentMonth !== 0) {
-    firstDateOfDisplayMonth.setMonth(firstDateOfDisplayMonth.getMonth() + this.nthMonthFromCurrentMonth);
+  if (this.diffBetCurrentAndDisplayMonth !== 0) {
+    firstDateOfDisplayMonth.setMonth(
+      firstDateOfDisplayMonth.getMonth() + this.diffBetCurrentAndDisplayMonth
+    );
   }
-  const month = firstDateOfDisplayMonth.getMonth()
+  const month = firstDateOfDisplayMonth.getMonth();
   const year = firstDateOfDisplayMonth.getFullYear();
 
   const lastDateOfDisplayMonth = new Date(year, month + 1, 0);
@@ -77,9 +79,12 @@ function renderMonthView() {
   const monthDisplay = document.getElementById(
     `monthDisplay_${this.uniqueCalendarId}`
   );
-  monthDisplay.innerText = `${firstDateOfDisplayMonth.toLocaleDateString("en-us", {
-    month: "long",
-  })} ${year}`;
+  monthDisplay.innerText = `${firstDateOfDisplayMonth.toLocaleDateString(
+    "en-us",
+    {
+      month: "long",
+    }
+  )} ${year}`;
 
   renderDateRows.call(this, firstDateOfDisplayMonth, lastDateOfDisplayMonth);
 }

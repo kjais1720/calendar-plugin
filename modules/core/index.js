@@ -3,9 +3,9 @@ function Calendar(calendarContainerId, userProvidedConfigs) {
   this.calendarConfigs = userProvidedConfigs;
   this.uniqueCalendarId = calendarContainerId;
 
-  this.nthMonthFromCurrentMonth = 0;
-  this.nthWeekFromCurrentWeek = 0;
-  this.nthDateFromCurrentDate = 0;
+  this.diffBetCurrentAndDisplayMonth = 0;
+  this.diffBetCurrentAndDisplayWeek = 0;
+  this.diffBetCurrentAndDisplayDate = 0;
 
   this.render = render.bind(this);
   this.renderMonthView = renderMonthView.bind(this);
