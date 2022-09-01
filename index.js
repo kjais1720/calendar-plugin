@@ -66,16 +66,27 @@ let eventsList = localStorage.getItem("eventsList")
     selectedEventId = event.id;
     const { date, time, title } = {...event}; // In case event is undefined
     const { eventStartDate, eventEndDate} = getEventStartAndEndDate(date, time);
-    document.getElementById("eventTitle").innerText += title;
-    document.getElementById("eventDuration").innerText += `${eventStartDate} to ${eventEndDate}`
+    document.getElementById("eventTitle").innerText = title;
+    document.getElementById("eventDuration").innerText = `${eventStartDate} to ${eventEndDate}`
     eventDetailsModal.style.display = "block";
     backDrop.style.display = "block";
   }  
+
+  function deleteEvent() {
+    const indexOfEventToDelete = eventsList.findIndex(
+      ({ id }) => id === selectedEventId
+    );
+    eventsList.splice(indexOfEventToDelete, 1);
+    localStorage.setItem("eventsList", JSON.stringify(eventsList));
+    renderEvents();
+    closeModal();
+  }
 
   function initButtons() {
     document.getElementById("saveButton").addEventListener("click", saveEvent);
     document.getElementById("cancelButton").addEventListener("click", closeModal);
     document.getElementById("closeButton").addEventListener("click", closeModal);
+    document.getElementById("deleteButton").addEventListener("click", deleteEvent);
   }
   
   function init() {
@@ -84,6 +95,7 @@ let eventsList = localStorage.getItem("eventsList")
     const eventConfigs = {
       eventsList,
       createNewEvent,
+      deleteEvent,
       openEventDetailsModal,
     };
     renderEvents = addEventsPluginToCalendar(newCalendar, eventConfigs);
