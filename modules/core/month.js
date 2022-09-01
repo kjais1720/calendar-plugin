@@ -74,6 +74,11 @@ function renderMonthView() {
     firstDateOfDisplayMonth.setMonth(
       firstDateOfDisplayMonth.getMonth() + this.diffBetCurrentAndDisplayMonth
     );
+
+    const currentDate = new Date();
+    let numberOfDaysFromCurrentday = Math.floor((firstDateOfDisplayMonth - currentDate ) / (24 * 60 * 60 * 1000));
+    this.diffBetCurrentAndDisplayWeek = Math.floor(numberOfDaysFromCurrentday / 7) +1;
+    this.diffBetCurrentAndDisplayDate = numberOfDaysFromCurrentday;
   }
   const displayMonth = firstDateOfDisplayMonth.getMonth();
   const displayYear = firstDateOfDisplayMonth.getFullYear();
@@ -89,7 +94,7 @@ function renderMonthView() {
       month: "long",
     }
   )} ${displayYear}`;
-
+  
   renderDateRowsOfAMonth.call(
     this,
     firstDateOfDisplayMonth,
