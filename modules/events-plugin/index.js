@@ -26,6 +26,31 @@ function addEventsPluginToCalendar(calendarInstance, eventConfigs) {
     }
   }
 
+  function createNewEvent(date, time) {
+    const { eventStartDate, eventEndDate } = getEventStartAndEndDate(
+      date,
+      time
+    );
+    const promptMessage = `Create an event from ${eventStartDate} to ${eventEndDate}`;
+
+    const newEventTitle = prompt(promptMessage);
+    if (newEventTitle.trim() !== "") {
+      const eventId = `${date}_${time}_${newEventTitle}`;
+      const eventAlreadyExists = eventsList.some(({ id }) => id === eventId);
+
+      if (eventAlreadyExists) return;
+
+      const newEvent = {
+        id: eventId,
+        date,
+        title: newEventTitle,
+        time
+      };
+      eventsList.push(newEvent);
+      renderEvents();
+    }
+  }
+
   function setEventHandlersToCells(eventsList) {
     const allViewTableBodies = document.querySelectorAll(
       `#${uniqueCalendarId} table tbody`
