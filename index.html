@@ -15,16 +15,40 @@
   <div id="calendar">
   </div>
 
+  <div id="newEventModal">
+    <h2>New Event</h2>
+    <hr>
+    <p id="modalHeading"></p>
+    <input id="eventTitleInput" aria-label="Event Title" placeholder="Event Title" />
+
+    <button class="cal-button" id="saveButton">Save</button>
+    <button class="cal-button" id="cancelButton">Cancel</button>
+  </div>
+
+  <div id="eventDetailsModal">
+    <h2>Event</h2>
+    <h3 id="eventTitle">Title: </h3>
+    <div>
+      <b>Duration: </b><span id="eventDuration"> </span>
+    </div>
+
+    <button class="modal-button" id="deleteButton">Delete</button>
+    <button class="modal-button" id="closeButton">Close</button>
+  </div>
+
+  <div id="modalBackDrop"></div>
+
+
   <script src="./modules/utils.js"></script>
   <script src="./modules/constants.js"></script>
   <script src="./modules/week.js"></script>
   <script src="./modules/month.js"></script>
   <script src="./modules/day.js"></script>
   <script src="./modules/index.js"></script>
-  <script>
-    const newCalendar = new Calendar("calendar");
-    newCalendar.render();
-  </script>
+
+  <script src="./modules/events-plugin/utils.js"></script>
+  <script src="./modules/events-plugin/index.js"></script>
+  <script src="./index.js"></script>
 </body>
 
 </html>
