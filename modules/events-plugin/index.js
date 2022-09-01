@@ -1,6 +1,5 @@
-function addEventsPluginToCalendar(calendarInstance, eventConfigs) {
+function addEventsPluginToCalendar(calendarInstance, userProvidedConfigs) {
   const { uniqueCalendarId } = calendarInstance;
-  const { createNewEvent, openEventDetailsModal } = eventConfigs;
   const navButtons = document.querySelectorAll(
     `#${uniqueCalendarId} .navButton`
   );
@@ -10,7 +9,7 @@ function addEventsPluginToCalendar(calendarInstance, eventConfigs) {
 
   function renderEvents() {
     const { activeViewId } = calendarInstance;
-    const { eventsList } = eventConfigs;
+    const { eventsList } = userProvidedConfigs;
     switch (activeViewId) {
       case `monthView_${uniqueCalendarId}`:
         insertEventsInCells(`monthView_${uniqueCalendarId}`, eventsList);
@@ -86,38 +85,32 @@ function addEventsPluginToCalendar(calendarInstance, eventConfigs) {
       //Delegating events
       tableBody.addEventListener("click", (e) => {
         const { target } = e;
-        if (
-          target.className.includes("dateCell") ||
-          target.className.includes("hourCell")
-        ) {
+        const isDateOrHourCell =
+          target.getAttribute("data-date") &&
+          (target.className.includes("dateCell") ||
+            target.className.includes("hourCell"));
+
+        if (isDateOrHourCell) {
           const cellDate = target.getAttribute("data-date");
           const cellTime = target.getAttribute("data-hour") ?? "All Day";
-          
-          if(createNewEvent){
-            createNewEvent(cellDate, cellTime);
+
+          if (userProvidedConfigs.createNewEvent) {
+            userProvidedConfigs.createNewEvent(cellDate, cellTime);
             return;
           }
 
-          const newEventTitle = prompt(`Enter the title of event`);
-          if (newEventTitle.trim() !== "") {
-            const eventId = `${cellDate}_${cellTime}_${newEventTitle}`
-            const newEvent = {
-              id:eventId,
-              date: cellDate,
-              title: newEventTitle,
-              time: cellTime,
-            };
-            eventsList.push(newEvent);
-            renderEvents();
-          }
+          createNewEvent(cellDate, cellTime);
+
         } else if (target.className === "event") {
-          const targetEventId = target.getAttribute("data-eventId"); 
-          const targetEvent = eventsList.find(({id})=> id === targetEventId);
-          if(openEventDetailsModal){
-            openEventDetailsModal(targetEvent);
+          const targetEventId = target.getAttribute("data-eventId");
+          const targetEvent = eventsList.find(({ id }) => id === targetEventId);
+          if (userProvidedConfigs.openEventDetailsModal) {
+            userProvidedConfigs.openEventDetailsModal(targetEvent);
             return;
           }
-          alert(target.getAttribute("data-eventTitle"));
+
+          openEventDetailsModal(targetEvent);
+        
         }
       });
     });
