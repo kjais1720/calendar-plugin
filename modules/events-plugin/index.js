@@ -51,6 +51,26 @@ function addEventsPluginToCalendar(calendarInstance, eventConfigs) {
     }
   }
 
+  function openEventDetailsModal(event) {
+    const { date, time, title } = event;
+    const { eventStartDate, eventEndDate } = getEventStartAndEndDate(
+      date,
+      time
+    );
+    const modalDisplayText = `Title: ${title} 
+                              \nDuration: ${eventStartDate} to ${eventEndDate} 
+                              \n\nTo DELETE the event, press "OK", else press "Cancel"`;
+    const shouldDeleteEvent = confirm(modalDisplayText);
+    if(shouldDeleteEvent){
+      if(userProvidedConfigs.deleteEvent){
+        userProvidedConfigs.deleteEvent(event);
+        return;
+      }
+      deleteEvent(event);
+    }
+  }
+
+
   function setEventHandlersToCells(eventsList) {
     const allViewTableBodies = document.querySelectorAll(
       `#${uniqueCalendarId} table tbody`
