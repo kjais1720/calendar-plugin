@@ -10,6 +10,7 @@ let eventsList = localStorage.getItem("eventsList")
   ? JSON.parse(localStorage.getItem("eventsList"))
   : [];
 
+
   function getEventStartAndEndDate(eventDate, eventTime) {
     let eventStartDate = new Date(eventDate);
     let eventEndDate = new Date(eventDate);
@@ -61,9 +62,20 @@ let eventsList = localStorage.getItem("eventsList")
     selectedTime = time;
   }
 
+  function openEventDetailsModal(event) {
+    selectedEventId = event.id;
+    const { date, time, title } = {...event}; // In case event is undefined
+    const { eventStartDate, eventEndDate} = getEventStartAndEndDate(date, time);
+    document.getElementById("eventTitle").innerText += title;
+    document.getElementById("eventDuration").innerText += `${eventStartDate} to ${eventEndDate}`
+    eventDetailsModal.style.display = "block";
+    backDrop.style.display = "block";
+  }  
+
   function initButtons() {
     document.getElementById("saveButton").addEventListener("click", saveEvent);
     document.getElementById("cancelButton").addEventListener("click", closeModal);
+    document.getElementById("closeButton").addEventListener("click", closeModal);
   }
   
   function init() {
@@ -72,6 +84,7 @@ let eventsList = localStorage.getItem("eventsList")
     const eventConfigs = {
       eventsList,
       createNewEvent,
+      openEventDetailsModal,
     };
     renderEvents = addEventsPluginToCalendar(newCalendar, eventConfigs);
     initButtons();
