@@ -14,7 +14,7 @@ function renderDateRowsOfAMonth(firstDateOfMonth, lastdateOfMonth) {
   while (i <= lastdateOfMonth.getDate()) {
     let dateRowOfWeek = "<tr class='dateRow'>";
     for (let j = 0; j < 7; j++) {
-      const dateOfCurrentCell = new Date();
+      const dateOfCurrentCell = new Date(firstDateOfMonth);
       dateOfCurrentCell.setDate(firstDateOfMonth.getDate() + (i - 1));
       const isCurrentDay =
         i === currentDayNumber &&

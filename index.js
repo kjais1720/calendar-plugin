@@ -17,7 +17,14 @@ function getEventStartAndEndDate(eventDate, eventTime) {
   if (eventTime === "All Day") {
     eventEndDate.setDate(eventStartDate.getDate() + 1);
   } else {
-    const eventTimeInHours = Number(eventTime.slice(0, -2));
+    let eventTimeInHours = Number(eventTime.slice(0, -2)); //Removing the postfix( AM/PM )
+    const eventTimePostFix = eventTime.slice(-2,);
+    if( eventTimePostFix === "PM") {
+      eventTimeInHours += 12;
+    }
+    else if( eventTimePostFix === "AM" && eventTimeInHours === 12){
+      eventTimeInHours = 0;
+    }
     eventStartDate.setHours(eventTimeInHours);
     eventEndDate.setHours(eventTimeInHours + 1);
   }
@@ -33,7 +40,7 @@ function closeModal() {
 }
 
 function saveEvent() {
-  if (eventTitleInput.value) {
+  if (eventTitleInput.value.trim() !== "") {
     const eventId = `${selectedDate}_${selectedTime}_${eventTitleInput.value}`;
     eventsList.push({
       id: eventId,
