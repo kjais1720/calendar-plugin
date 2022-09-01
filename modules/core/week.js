@@ -31,7 +31,7 @@ function renderHourRowsOfAWeek(weekStartDate) {
   const weekTableBody = document.getElementById(
     `weekTableBody_${this.uniqueCalendarId}`
   );
-  let allRows = '';
+  let allRows = "";
   HOURS_IN_A_DAY.forEach((hour) => {
     let singleRow = `<tr class='hourRow'>`;
     singleRow += `<td class="hourCell">${hour}</td>`;
@@ -42,24 +42,24 @@ function renderHourRowsOfAWeek(weekStartDate) {
         dateOfCurrentCell
       )} class="hourCell"></td>`;
     }
-    singleRow += "</tr>"
+    singleRow += "</tr>";
     allRows += singleRow;
   });
-  weekTableBody.innerHTML = allRows
+  weekTableBody.innerHTML = allRows;
 }
 
 function initWeekNavButtons() {
   document
     .getElementById(`nextWeek_${this.uniqueCalendarId}`)
     .addEventListener("click", () => {
-      this.nthWeekFromCurrentWeek++;
+      this.diffBetCurrentAndDisplayWeek++;
       this.renderWeekView();
     });
 
   document
     .getElementById(`previousWeek_${this.uniqueCalendarId}`)
     .addEventListener("click", () => {
-      this.nthWeekFromCurrentWeek--;
+      this.diffBetCurrentAndDisplayWeek--;
       this.renderWeekView();
     });
 }
@@ -70,8 +70,10 @@ function renderWeekView() {
   );
   const currentDate = new Date();
 
-  if (this.nthWeekFromCurrentWeek !== 0) {
-    currentDate.setDate(new Date().getDate() + this.nthWeekFromCurrentWeek * 7);
+  if (this.diffBetCurrentAndDisplayWeek !== 0) {
+    currentDate.setDate(
+      new Date().getDate() + this.diffBetCurrentAndDisplayWeek * 7
+    );
   }
 
   const weekDates = getWeekDates(currentDate);
