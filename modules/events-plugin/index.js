@@ -1,6 +1,9 @@
 function addEventsPluginToCalendar(calendarInstance, userProvidedConfigs) {
   const { uniqueCalendarId } = calendarInstance;
-  let eventsList = userProvidedConfigs?.eventsList ?? [];
+  const locallySavedEvents = localStorage.getItem(`${uniqueCalendarId}_eventsList`) 
+                              ? JSON.parse(localStorage.getItem(`${uniqueCalendarId}_eventsList`)) 
+                              : []
+  let eventsList = userProvidedConfigs?.eventsList ?? locallySavedEvents;
   const navButtons = document.querySelectorAll(
     `#${uniqueCalendarId} .navButton`
   );
@@ -49,6 +52,7 @@ function addEventsPluginToCalendar(calendarInstance, userProvidedConfigs) {
         time
       };
       eventsList.push(newEvent);
+      localStorage.setItem(`${uniqueCalendarId}_eventsList`,JSON.stringify(eventsList));
       renderEvents();
     }
   }
@@ -77,6 +81,7 @@ function addEventsPluginToCalendar(calendarInstance, userProvidedConfigs) {
       ({ id }) => id === event.id
     );
     eventsList.splice(indexOfEventToDelete, 1);
+    localStorage.setItem(`${uniqueCalendarId}_eventsList`,JSON.stringify(eventsList));
     renderEvents();
   }
 
