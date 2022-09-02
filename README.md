@@ -52,7 +52,6 @@ There, you have it. A calendar component is created inside the tag with id=`"cal
 </html>
 ```
 
-
 ## Adding Plugins
 
 ### Events Plugin
@@ -83,6 +82,21 @@ then you need to call the `addEventsPluginToCalendar` function.
 - These configurations are optional so if you don't provide them, then the plugin will handle the creation/display/deletion of the events itself with a locally persistent events list.
 - The function `addEventsPluginToCalendar` returns another function `renderEvents`. It should be called everytime the config `eventsList` changes, if you have provided the configs.
 - If you have not provided the configs, then no need to call the `renderEvents` function anywhere.
+## Features
+- Month View
+- Week View
+- Day View
+- go to next/previous month/week/day
+- Add event for the whole day
+- Add event for a particular hour of day
+- Display Event
+- Delete Event
+- Locally persistant Events list
+## Upcoming Features
+- Button to jump directly to current month/week/day.
+- Add events that span across multiple days
+- Add events that span across multiple hours
+- Drag and drop events
 
 ## Customising theme
 You can change the colors of the calendar by modifying the following CSS variables.
@@ -90,3 +104,4 @@ You can change the colors of the calendar by modifying the following CSS variabl
 - --cal-secondary-color
 - --cal-event-color
 - --cal-current-day-color
+
